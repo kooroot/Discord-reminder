@@ -62,11 +62,8 @@ async function handleRepeatReminder(interaction: ChatInputCommandInteraction): P
   const interval = interaction.options.getString('반복간격', true);
   const message = interaction.options.getString('메시지', true);
 
-  console.log('1. deferReply 시작');
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-  console.log('2. deferReply 완료');
 
-  console.log('3. scheduleReminder 시작');
   const result = await scheduleReminder(
     client,
     interaction.user.id,
@@ -76,10 +73,8 @@ async function handleRepeatReminder(interaction: ChatInputCommandInteraction): P
     interval,
     message
   );
-  console.log('4. scheduleReminder 완료', result);
 
   if (result.success) {
-    console.log('5. editReply 시작 (성공)');
     await interaction.editReply({
       content: `✅ 반복 알림이 설정되었습니다!\n` +
         `📅 시작 시간: ${startTime}\n` +
