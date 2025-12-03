@@ -95,9 +95,14 @@ export async function scheduleReminder(
     return { success: false, error: '잘못된 시간 형식입니다. (예: 2025-12-03T10:00)' };
   }
 
-  const channel = await client.channels.fetch(channelId) as TextChannel;
-  if (!channel) {
-    return { success: false, error: '채널을 찾을 수 없습니다.' };
+  let channel: TextChannel;
+  try {
+    channel = await client.channels.fetch(channelId) as TextChannel;
+    if (!channel) {
+      return { success: false, error: '채널을 찾을 수 없습니다.' };
+    }
+  } catch (error) {
+    return { success: false, error: '채널에 접근할 수 없습니다. 봇 권한을 확인해주세요.' };
   }
 
   const reminder: Reminder = {
