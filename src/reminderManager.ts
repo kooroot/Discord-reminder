@@ -141,8 +141,7 @@ export async function scheduleReminder(
       task.start();
     }, delay);
   } else {
-    // 시작 시간이 과거면 즉시 시작
-    await sendMessage();
+    // 시작 시간이 과거면 즉시 cron 시작 (첫 메시지는 다음 주기에)
     task.start();
   }
 

@@ -1,4 +1,4 @@
-import { Client, Events, GatewayIntentBits, ChatInputCommandInteraction } from 'discord.js';
+import { Client, Events, GatewayIntentBits, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
 import { scheduleReminder, stopReminder, restoreReminders, getReminder } from './reminderManager';
 
 const client = new Client({
@@ -35,15 +35,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await handleListReminder(interaction);
         break;
       default:
-        await interaction.reply({ content: '알 수 없는 명령어입니다.', ephemeral: true });
+        await interaction.reply({ content: '알 수 없는 명령어입니다.', flags: MessageFlags.Ephemeral });
     }
   } catch (error) {
     console.error('명령어 처리 오류:', error);
     const errorMessage = '명령어 처리 중 오류가 발생했습니다.';
     if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({ content: errorMessage, ephemeral: true });
+      await interaction.followUp({ content: errorMessage, flags: MessageFlags.Ephemeral });
     } else {
-      await interaction.reply({ content: errorMessage, ephemeral: true });
+      await interaction.reply({ content: errorMessage, flags: MessageFlags.Ephemeral });
     }
   }
 });
@@ -56,7 +56,7 @@ async function handleRepeatReminder(interaction: ChatInputCommandInteraction): P
   const interval = interaction.options.getString('반복간격', true);
   const message = interaction.options.getString('메시지', true);
 
-  await interaction.deferReply({ ephemeral: true });
+  await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
   const result = await scheduleReminder(
     client,
@@ -91,12 +91,12 @@ async function handleStopReminder(interaction: ChatInputCommandInteraction): Pro
   if (stopped) {
     await interaction.reply({
       content: '✅ 알림이 해제되었습니다.',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   } else {
     await interaction.reply({
       content: '❌ 설정된 알림이 없습니다.',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 }
@@ -114,12 +114,12 @@ async function handleListReminder(interaction: ChatInputCommandInteraction): Pro
         `🔁 반복 간격: ${reminder.interval}\n` +
         `💬 메시지: ${reminder.message}\n` +
         `📆 생성일: ${reminder.createdAt}`,
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   } else {
     await interaction.reply({
       content: '❌ 설정된 알림이 없습니다.',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 }
