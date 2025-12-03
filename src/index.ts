@@ -40,10 +40,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
   } catch (error) {
     console.error('명령어 처리 오류:', error);
     const errorMessage = '명령어 처리 중 오류가 발생했습니다.';
-    if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({ content: errorMessage, flags: MessageFlags.Ephemeral });
-    } else {
-      await interaction.reply({ content: errorMessage, flags: MessageFlags.Ephemeral });
+    try {
+      if (interaction.replied) {
+        await interaction.followUp({ content: errorMessage, flags: MessageFlags.Ephemeral });
+      } else if (interaction.deferred) {
+        await interaction.editReply({ content: errorMessage });
+      } else {
+        await interaction.reply({ content: errorMessage, flags: MessageFlags.Ephemeral });
+      }
+    } catch (e) {
+      console.error('에러 응답 실패:', e);
     }
   }
 });
