@@ -1,0 +1,26 @@
+{
+  "name": "discord-reminder-bot",
+  "version": "1.0.0",
+  "description": "Discord Reminder Bot with TypeScript",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun run --watch src/index.ts",
+    "register": "bun run src/registerCommands.ts"
+  },
+  "keywords": ["discord", "bot", "reminder", "typescript"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^2.4.0",
+    "dayjs": "^1.11.13",
+    "discord-api-types": "^0.37.97",
+    "discord.js": "^14.18.0",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/node-cron": "^3.0.11",
+    "typescript": "^5.7.2"
+  }
+}
